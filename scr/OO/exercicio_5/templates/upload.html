@@ -1,0 +1,6 @@
+{% if successful_upload %}
+<p>Upload realizado com sucesso</p>
+{%endif%}
+<form action="/upload" enctype="multipart/form-data" method="POST">
+  <input type="file" name="arquivo" id="arquivo" /> <input type="submit" />
+</form>
