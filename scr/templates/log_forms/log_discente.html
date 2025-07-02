@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="foo" />
+    <meta name="keywords" content="foo,bar" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Controle de Qualidade de Patrimônio</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f4f4f4;
+        font-family: 'Arial', sans-serif;
+      }
+      .container {
+        max-width: 600px;
+        width: 100%;
+        background: #f4f4f4;
+        border-radius: 8px;
+        padding: 40px 20px 30px 20px;
+        text-align: center;
+      }
+      .account-switcher {
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: center;
+        gap: 70px;
+      }
+      .account-btn {
+        padding: 10px 22px;
+        background: #e0e0e0;
+        color: #333;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.2s;
+        display: inline-block;
+      }
+      .current-account-btn {
+        padding: 10px 22px;
+        background: #b2f5cc;
+        color: #333;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.2s;
+        display: inline-block;
+      }
+      .account-btn:hover {
+        background: #b2f5cc;
+        color: #222;
+      }
+
+      h2 {
+        margin-bottom: 32px;
+        font-weight: 400;
+        font-size: 2em;
+      }
+      form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px 24px;
+        justify-items: stretch;
+      }
+      .full-width {
+        grid-column: 1 / 3;
+      }
+      input[type='text'],
+      input[type='email'],
+      input[type='password'],
+      input[type='date'] {
+        width: 100%;
+        padding: 12px 10px;
+        border: none;
+        border-radius: 8px;
+        background: #fff;
+        font-size: 1em;
+        box-sizing: border-box;
+        margin-bottom: 0;
+      }
+      .button-container {
+        margin-top: 32px;
+        text-align: center;
+      }
+      button,
+      .switch-btn {
+        padding: 12px 36px;
+        background: #b2f5cc;
+        color: #222;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin: 0 10px;
+        text-decoration: none;
+        display: inline-block;
+      }
+      button:hover,
+      .switch-btn:hover {
+        background: #a0e6b8;
+      }
+      .switch-btn {
+        background: #e0e0e0;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>
+        {% if sign_up %}
+          Cadastro Discente
+        {% else %}
+          Sistema de Controle de
+          Qualidade de Patrimônio
+        {% endif %}
+      </h2>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div class="account-switcher">
+        <a href="/login" class="current-account-btn">Discente</a>
+        <a href="/docente/login" class="account-btn">Docente</a>
+        <a href="/funcionario/login" class="account-btn">Funcionário</a>
+      </div>
+      {% if sign_up %}
+        <form method="post" action="/signup">
+          <input type="text" placeholder="Nome" name="nome" required />
+          <input type="text" placeholder="Matrícula" name="matricula" required />
+          <input type="email" placeholder="Email" name="email" required />
+          <input type="text" placeholder="Curso" name="curso" required />
+          <input type="text" placeholder="CPF" name="cpf" required />
+          <input type="date" placeholder="Data de início" name="data_inicio" required />
+          <input type="password" placeholder="Senha" name="senha" required />
+          <input type="date"
+                 placeholder="Data prevista de termino"
+                 name="data_termino"
+                 required />
+          <div class="full-width button-container">
+            <button type="submit">Criar Conta</button>
+          </div>
+        </form>
+        <div class="button-container">
+          <a href="/login" class="switch-btn">Já tem conta? Login</a>
+        </div>
+      {% else %}
+        <br>
+        <br>
+        <h2>Log-In</h2>
+        <form method="post" action="/login">
+          <input type="email"
+                 placeholder="Email"
+                 name="email"
+                 required
+                 class="full-width" />
+          <input type="password"
+                 placeholder="Senha"
+                 name="senha"
+                 required
+                 class="full-width" />
+          <div class="full-width button-container">
+            <button type="submit">Entrar</button>
+          </div>
+        </form>
+        <div class="button-container">
+          <a href="/sign_up" class="switch-btn">Não tem conta? Cadastre-se</a>
+        </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
