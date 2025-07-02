@@ -1,154 +1,130 @@
--- TABELAS DE APOIO BÁSICO
-CREATE TABLE IF NOT EXISTS nivel (
-    id INT PRIMARY KEY,
-    descricao VARCHAR(255)
+-- ================================================
+-- TABELAS DE ESTRUTURA ORGANIZACIONAL
+-- ================================================
+
+-- Tabela de prédios físicos do campus
+CREATE TABLE IF NOT EXISTS Predio (
+    id INT PRIMARY KEY,              -- Identificador único do prédio
+    nome VARCHAR(100),               -- Nome do prédio
+    local VARCHAR(100)               -- Localização do prédio
 );
 
-CREATE TABLE IF NOT EXISTS area_pesquisa (
-    id INT PRIMARY KEY,
-    descricao VARCHAR(255)
+-- Tabela de departamentos vinculados aos prédios
+CREATE TABLE IF NOT EXISTS Departamento (
+    id INT PRIMARY KEY,              -- Identificador único do departamento
+    nome VARCHAR(100),               -- Nome do departamento
+    id_predio INT,                   -- Chave estrangeira para o prédio onde o departamento está localizado
+    FOREIGN KEY (id_predio) REFERENCES Predio(id)
 );
 
-CREATE TABLE IF NOT EXISTS area_trabalho (
-    id INT PRIMARY KEY,
-    nome VARCHAR(255)
+-- Tabela de cursos oferecidos pelos departamentos
+CREATE TABLE IF NOT EXISTS Curso (
+    id INT PRIMARY KEY,              -- Identificador único do curso
+    nome VARCHAR(100),               -- Nome do curso
+    id_departamento INT,             -- Chave estrangeira para o departamento que oferece o curso
+    FOREIGN KEY (id_departamento) REFERENCES Departamento(id)
 );
 
-CREATE TABLE IF NOT EXISTS predio (
-    id INT PRIMARY KEY,
-    nome VARCHAR(255),
-    local VARCHAR(255)
+-- ================================================
+-- TABELAS DE USUÁRIOS
+-- ================================================
+
+-- Tabela geral de usuários do sistema
+CREATE TABLE IF NOT EXISTS Usuario (
+    cpf BIGINT PRIMARY KEY,          -- CPF como identificador único
+    nome VARCHAR(100) NOT NULL,      -- Nome do usuário
+    email VARCHAR(100) UNIQUE,       -- E-mail do usuário (único)
+    senha VARCHAR(100) NOT NULL      -- Senha de acesso
 );
 
--- TABELAS DE ESTRUTURA FÍSICA
-CREATE TABLE IF NOT EXISTS sala (
-    id INT PRIMARY KEY,
-    nome VARCHAR(255),
-    foto_binaria BYTEA,
-    id_predio INT,
-    FOREIGN KEY (id_predio) REFERENCES predio(id)
+-- Tabela de funcionários vinculados a usuários
+CREATE TABLE IF NOT EXISTS Funcionario (
+    matricula INT PRIMARY KEY,       -- Matrícula do funcionário
+    cpf BIGINT,                      -- CPF do usuário correspondente
+    FOREIGN KEY (cpf) REFERENCES Usuario(cpf)
 );
 
--- TABELAS DE EQUIPAMENTO
-CREATE TABLE IF NOT EXISTS tipo_equipamento (
-    id INT PRIMARY KEY,
-    descricao VARCHAR(255)
+-- Tabela de docentes com vínculo departamental
+CREATE TABLE IF NOT EXISTS Docente (
+    matricula INT PRIMARY KEY,       -- Matrícula do docente
+    cpf BIGINT NOT NULL UNIQUE,      -- CPF do usuário correspondente
+    id_departamento INT NOT NULL,    -- Departamento ao qual o docente pertence
+    FOREIGN KEY (cpf) REFERENCES Usuario(cpf),
+    FOREIGN KEY (id_departamento) REFERENCES Departamento(id)
 );
 
-CREATE TABLE IF NOT EXISTS status_equipamento (
-    id INT PRIMARY KEY,
-    descricao VARCHAR(255)
+-- Tabela de dicentes (alunos) vinculados a cursos
+CREATE TABLE IF NOT EXISTS Dicente (
+    matricula INT PRIMARY KEY,       -- Matrícula do aluno
+    data_de_inicio DATE NOT NULL,    -- Data de início do curso
+    data_de_termino DATE,            -- Data de término (pode ser NULL)
+    id_curso INT,                    -- Curso ao qual o aluno pertence
+    cpf BIGINT NOT NULL,             -- CPF do usuário correspondente
+    FOREIGN KEY (id_curso) REFERENCES Curso(id),
+    FOREIGN KEY (cpf) REFERENCES Usuario(cpf)
 );
 
-CREATE TABLE IF NOT EXISTS equipamento (
-    id INT PRIMARY KEY,
-    data_aquisicao DATE,
-    fabricante VARCHAR(255),
-    id_tipo_equipamento INT,
-    id_status_equipamento INT,
-    id_sala INT,
-    FOREIGN KEY (id_tipo_equipamento) REFERENCES tipo_equipamento(id),
-    FOREIGN KEY (id_status_equipamento) REFERENCES status_equipamento(id),
-    FOREIGN KEY (id_sala) REFERENCES sala(id)
+-- ================================================
+-- TABELAS DE INFRAESTRUTURA FÍSICA
+-- ================================================
+
+-- Tabela de salas físicas
+CREATE TABLE IF NOT EXISTS Sala (
+    id INT PRIMARY KEY,              -- Identificador da sala
+    nome VARCHAR(100),               -- Nome ou número da sala
+    foto_binaria BYTEA,              -- Imagem ou planta da sala (formato binário)
+    id_predio INT,                   -- Prédio onde a sala está localizada
+    FOREIGN KEY (id_predio) REFERENCES Predio(id)
 );
 
--- TABELAS DE USUÁRIO
-CREATE TABLE IF NOT EXISTS usuario (
-    cpf VARCHAR(11) PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE,
-    senha VARCHAR(255) NOT NULL
+-- Tabela de tipos de equipamento (ex: computador, projetor)
+CREATE TABLE IF NOT EXISTS TipoEquipamento (
+    id INT PRIMARY KEY,              -- Identificador do tipo
+    descricao VARCHAR(100)           -- Descrição do tipo
 );
 
--- TABELAS DE FUNCIONÁRIOS E DOCENTES
-CREATE TABLE IF NOT EXISTS funcionario (
-    matricula INT PRIMARY KEY,
-    cpf VARCHAR(11),
-    id_area_trabalho INT,
-    FOREIGN KEY (cpf) REFERENCES usuario(cpf),
-    FOREIGN KEY (id_area_trabalho) REFERENCES area_trabalho(id)
+-- Tabela de status de equipamentos (ativo, em manutenção, etc.)
+CREATE TABLE IF NOT EXISTS StatusEquipamento (
+    id INT PRIMARY KEY,              -- Identificador do status
+    descricao VARCHAR(100)           -- Descrição do status
 );
 
-CREATE TABLE IF NOT EXISTS docente (
-    matricula INT PRIMARY KEY,
-    cpf VARCHAR(11) NOT NULL,
-    FOREIGN KEY (cpf) REFERENCES usuario(cpf),
-    FOREIGN KEY (matricula) REFERENCES funcionario(matricula)
+-- Tabela principal de equipamentos
+CREATE TABLE IF NOT EXISTS Equipamento (
+    id INT PRIMARY KEY,              -- Código do equipamento
+    data_aquisicao DATE,             -- Data da aquisição do equipamento
+    fabricante VARCHAR(100),         -- Nome do fabricante
+    id_tipo INT,                     -- Tipo do equipamento
+    id_status INT,                   -- Status atual do equipamento
+    id_sala INT,                     -- Sala onde o equipamento está instalado
+    FOREIGN KEY (id_tipo) REFERENCES TipoEquipamento(id),
+    FOREIGN KEY (id_status) REFERENCES StatusEquipamento(id),
+    FOREIGN KEY (id_sala) REFERENCES Sala(id)
 );
 
--- TABELAS DE CURSO
-CREATE TABLE IF NOT EXISTS departamento (
-    id INT PRIMARY KEY,
-    nome VARCHAR(255),
-    id_predio INT,
-    FOREIGN KEY (id_predio) REFERENCES predio(id)
+-- ================================================
+-- TABELAS DE OCORRÊNCIAS E MANUTENÇÃO
+-- ================================================
+
+-- Tabela de ocorrências de problemas com equipamentos
+CREATE TABLE IF NOT EXISTS Ocorrencia (
+    id INT PRIMARY KEY,              -- Identificador da ocorrência
+    problema VARCHAR(255),           -- Descrição do problema
+    data_abertura DATE,              -- Data de abertura da ocorrência
+    data_fechamento DATE,            -- Data de fechamento (pode ser NULL)
+    id_usuario BIGINT NOT NULL,      -- Usuário que reportou o problema
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(cpf)
 );
 
-CREATE TABLE IF NOT EXISTS curso (
-    id INT PRIMARY KEY,
-    nome VARCHAR(255),
-    id_departamento INT,
-    id_nivel INT,
-    FOREIGN KEY (id_departamento) REFERENCES departamento(id),
-    FOREIGN KEY (id_nivel) REFERENCES nivel(id)
-);
-
-CREATE TABLE IF NOT EXISTS curso_externo (
-    id INT PRIMARY KEY,
-    nome VARCHAR(255),
-    faculdade VARCHAR(255),
-    id_nivel INT,
-    FOREIGN KEY (id_nivel) REFERENCES nivel(id)
-);
-
--- TABELAS DE RELACIONAMENTO COM CURSO
-CREATE TABLE IF NOT EXISTS fez (
-    id INT PRIMARY KEY,
-    id_curso_externo INT,
-    matricula_docente INT,
-    data_inicio DATE,
-    data_termino DATE,
-    FOREIGN KEY (id_curso_externo) REFERENCES curso_externo(id),
-    FOREIGN KEY (matricula_docente) REFERENCES docente(matricula)
-);
-
-CREATE TABLE IF NOT EXISTS dicente (
-    matricula INT PRIMARY KEY,
-    data_de_inicio DATE NOT NULL,
-    data_de_termino DATE,
-    id_curso INT,
-    cpf VARCHAR(11) NOT NULL,
-    FOREIGN KEY (id_curso) REFERENCES curso(id),
-    FOREIGN KEY (cpf) REFERENCES usuario(cpf)
-);
-
--- TABELAS DE PESQUISA
-CREATE TABLE IF NOT EXISTS pesquisa (
-    id INT PRIMARY KEY,
-    id_area_pesquisa INT,
-    matricula_docente INT,
-    FOREIGN KEY (id_area_pesquisa) REFERENCES area_pesquisa(id),
-    FOREIGN KEY (matricula_docente) REFERENCES docente(matricula)
-);
-
--- TABELAS DE MANUTENÇÃO E OCORRÊNCIAS
-CREATE TABLE IF NOT EXISTS ocorrencia (
-    id INT PRIMARY KEY,
-    problema TEXT,
-    data_abertura DATE,
-    data_fechamento DATE,
-    id_usuario VARCHAR(11) NOT NULL,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(cpf)
-);
-
-CREATE TABLE IF NOT EXISTS manutencao (
-    id INT PRIMARY KEY,
-    servico TEXT,
-    data DATE,
-    id_equipamento INT,
-    id_ocorrencia INT,
-    id_funcionario INT,
-    FOREIGN KEY (id_equipamento) REFERENCES equipamento(id),
-    FOREIGN KEY (id_ocorrencia) REFERENCES ocorrencia(id),
-    FOREIGN KEY (id_funcionario) REFERENCES funcionario(matricula)
+-- Tabela de registros de manutenção dos equipamentos
+CREATE TABLE IF NOT EXISTS Manutencao (
+    id INT PRIMARY KEY,              -- Identificador da manutenção
+    servico VARCHAR(255),            -- Descrição do serviço realizado
+    data DATE,                       -- Data da manutenção
+    id_equipamento INT,              -- Equipamento que foi mantido
+    id_ocorrencia INT,               -- Ocorrência associada
+    id_funcionario INT,              -- Funcionário responsável
+    FOREIGN KEY (id_equipamento) REFERENCES Equipamento(id),
+    FOREIGN KEY (id_ocorrencia) REFERENCES Ocorrencia(id),
+    FOREIGN KEY (id_funcionario) REFERENCES Funcionario(matricula)
 );
