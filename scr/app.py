@@ -27,6 +27,23 @@ def index():
 def get_ocorrencias():
     pass
 
+@app.route('/manutencoes', method=['GET'])
+def get_manutencoes():
+    pass
+
+@app.route('/adicionar_manutencoes', method=['GET', "POST"])
+def add_manutencoes():
+    pass
+
+@app.route('/adicionar_ocorrencia', method=['GET', "POST"])
+def add_ocorrencia():
+    pass
+
+@app.route('/perfil', method=['GET', "POST"])
+def perfil():
+    pass
+
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000, debug=True)
