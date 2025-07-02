@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import sqlite3
 import funcoes
 
@@ -19,28 +19,28 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 
-@app.route('/', method=['GET'])
+@app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
 
-@app.route('/ocorrencias', method=['GET'])
+@app.route('/ocorrencias', methods=['GET'])
 def get_ocorrencias():
     pass
 
-@app.route('/manutencoes', method=['GET'])
+@app.route('/manutencoes', methods=['GET'])
 def get_manutencoes():
     pass
 
-@app.route('/adicionar_manutencoes', method=['GET', "POST"])
+@app.route('/adicionar_manutencoes', methods=['GET', "POST"])
 def add_manutencoes():
     pass
 
-@app.route('/adicionar_ocorrencia', method=['GET', "POST"])
+@app.route('/adicionar_ocorrencia', methods=['GET', "POST"])
 def add_ocorrencia():
-    pass
+    return redirect('/ocorrencia')
 
-@app.route('/perfil', method=['GET', "POST"])
-def perfil():
+@app.route('/perfil/<id>', methods=['GET', "POST"])
+def perfil(id):
     pass
 
 
