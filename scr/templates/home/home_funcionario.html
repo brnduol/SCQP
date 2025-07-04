@@ -7,7 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>Página Inicial Funcionário</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/home.css') }}"
+    />
   </head>
   <body>
     <div class="header">
@@ -17,7 +20,7 @@
       </div>
       <div class="header-right">
         <button class="settings-btn">Configurações</button>
-        <button class="logout-icon" title="Logout">
+        <a href="/logout" class="logout-icon" title="Logout">
           <svg
             width="28"
             height="28"
@@ -32,7 +35,7 @@
             <polyline points="16 17 21 12 16 7" />
             <line x1="21" y1="12" x2="9" y2="12" />
           </svg>
-        </button>
+        </a>
       </div>
     </div>
     <div class="main-content">
