@@ -6,7 +6,7 @@
     <meta name="keywords" content="foo,bar" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Controle de Qualidade de Patrimônio</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/log_forms.css') }}">
   </head>
   <body>
     <div class="container">
@@ -37,7 +37,7 @@
       </div>
       {% endif %}
       {% if sign_up %}
-        <form method="post" action="/sign_up">
+        <form method="post" action="/funcionario/sign_up">
           <!--Atributos comum a todos -->
           <input type="text" placeholder="CPF" name="cpf" required>
           <input type="text" placeholder="Nome" name="nome" required>
@@ -45,15 +45,17 @@
 
           <!--Atributos especificos do funcionario -->
           <input type="text" placeholder="Matricula" name="matricula" required/>
+          <input type="password" placeholder="Senha" name="senha" required>
+
           <div class="full-width button-container">
-            <button type="submit">Criar Conta</button>
+            <button href="/funcionario/sign_up" type="submit">Criar Conta</button>
           </div>
         </form>
         <div class="button-container">
           <a href="/funcionario/login" class="switch-btn">Já tem conta? Login</a>
         </div>
       {% else %}
-        <form method="post" action="/login">
+        <form method="post" action="/funcionario/login">
           <input type="email"
                  placeholder="Email"
                  name="email"
@@ -65,7 +67,7 @@
                  required
                  class="full-width" />
           <div class="full-width button-container">
-            <button type="submit">Entrar</button>
+            <button href="/login" type="submit">Entrar</button>
           </div>
         </form>
         <div class="button-container">
