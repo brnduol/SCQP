@@ -1,9 +1,20 @@
+from datetime import datetime
 from flask import Flask, render_template, redirect, url_for, request, session
-from blueprints.funcionario import funcionario
+
+from models import *
+from helpers import *
 from blueprints.docente import docente
-from models.models import *
+from blueprints.funcionario import funcionario
+
+from blueprints.docente import docente
+from blueprints.funcionario import funcionario
 
 app = Flask(__name__)
+app.secret_key = '42'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+
+db.init_app(app)
+app.app_context().push()
 app.register_blueprint(funcionario, url_prefix='/funcionario')
 app.register_blueprint(docente, url_prefix='/docente')
 
@@ -13,131 +24,99 @@ def index():
     return redirect(url_for('login'))
 
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('log_forms/log_discente.html')
+    if request.method == 'POST':
+        email = request.form['email']
+        senha = request.form['senha']
+
+        user_credentials = verify_credentials_login(
+            email=email, senha=senha, type_usr='discente'
+        )
+        if user_credentials:
+            session['nome'] = user_credentials.nome
+            return redirect(url_for('home'))
+
+        return render_template('log_forms/log_discente.html')
+
+    return (
+        redirect(url_for('home'))
+        if 'name' in session
+        else render_template('log_forms/log_discente.html')
+    )
 
 
-@app.route('/sign_up', methods=['GET'])
+@app.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
-    return render_template('log_forms/log_discente.html', sign_up=True)
+    if request.method == 'POST':
+        cpf = request.form['cpf']
+        nome = request.form['nome']
+        email = request.form['email']
+        senha = request.form['senha']
+
+        matricula = request.form['matricula']
+        curso = request.form['curso']
+        data_inicio = datetime.strptime(request.form['data_inicio'], '%Y-%m-%d').date()
+        data_termino = datetime.strptime(
+            request.form['data_termino'], '%Y-%m-%d'
+        ).date()
+
+        id_curso = Curso.query.filter_by(nome=curso).first().id
+
+        if verify_credentials_sign_up(cpf=cpf) and id_curso:
+            usuario = Usuario(
+                cpf=cpf,
+                nome=nome,
+                email=email,
+                senha=senha,
+            )
+            db.session.add(usuario)
+
+            discente = Discente(
+                matricula=matricula,
+                data_de_inicio=data_inicio,
+                data_de_termino=data_termino,
+                id_curso=id_curso,
+                cpf=cpf,
+            )
+            db.session.add(discente)
+
+            db.session.commit()
+
+            session['nome'] = request.form['nome']
+
+            return redirect(url_for('home'))
+
+        return render_template(
+            'log_forms/log_discente.html',
+            invalid_credentials=True,
+            sign_up=True,
+        )
+
+    return (
+        redirect(url_for('home'))
+        if 'nome' in session
+        else render_template('log_forms/log_discente.html', sign_up=True)
+    )
 
 
-# # Sign-up
-# @app.route('/sign_up', methods=['GET', 'POST'])
-# def sign_up():
-#     if request.method == 'POST':
-#         # Getting data from page
-#         matricula = request.form['name']
-#         password = request.form['password']
-
-#         # Checking whether dicente is already used
-#         if Dicente.verify_credentials_sign_up(matricula=matricula):
-#             # Creating dicente instance
-#             dicente = Dicente(matricula=matricula, password=password)
-
-#             # Adding dicente to db
-#             dicente.db.add_data(dicente)
-#             dicente.db.commit_session()
-
-#             # Adding name to session
-#             session['name'] = request.form['name']
-
-#             # Redirecting to private page
-#             return redirect(url_for('notes'))
-
-#         # Rendering home page with invalid credentials
-#         return render_template(
-#             'home.html',
-#             invalid_credentials=True,
-#             sign_up=True,
-#         )
-
-#     # Rendering home page if dicente is not logged in else returning to private page
-#     return (
-#         redirect(url_for('notes'))
-#         if 'name' in session
-#         else render_template('home.html', sign_up=True)
-#     )
+@app.route('/home')
+def home():
+    if 'nome' in session:
+        return render_template('home/home.html', nome=session['nome'])
+    return render_template('home/home.html', not_login=True)
 
 
-# # Log-in
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         # Getting data from page
-#         name: str = request.form['name']
-#         password: str = request.form['password']
+@app.route('/logout')
+def logout():
 
-#         # Validating login
-#         if dicente.verify_credentials_login(name=name, password=password):
+    if 'nome' in session:
 
-#             # Adding name to session
-#             session['name'] = request.form['name']
+        session.pop('nome', None)
 
-#             # Redirecting to private page
-#             return redirect(url_for('notes'))
-
-#         # Rendering home page with invalid credentials
-#         return render_template('home.html', invalid_credentials=True)
-
-#     # Rendering home page if dicente is not logged in else returning to private page
-#     return (
-#         redirect(url_for('notes'))
-#         if 'name' in session
-#         else render_template('home.html')
-#     )
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
+    db.create_all()
     app.run(debug=True)
-
-
-# from flask import Flask, render_template, request, redirect
-# import sqlite3
-# import funcoes
-
-# app = Flask(__name__)
-
-# DATABASE = 'database.db'
-
-
-# def get_db():
-#     db = sqlite3.connect('database.db')
-#     db.row_factory = sqlite3.Row
-#     return db
-
-# def init_db():
-#     with app.app_context():
-#         db = get_db()
-#         with app.open_resource('/database/schema.sql', mode = 'r') as f:
-#             db.cursor().executescript(f.read())
-#         db.commit()
-
-# @app.route('/', methods=['GET'])
-# def index():
-#     return render_template('index.html')
-
-# @app.route('/ocorrencias', methods=['GET'])
-# def get_ocorrencias():
-#     pass
-
-# @app.route('/manutencoes', methods=['GET'])
-# def get_manutencoes():
-#     pass
-
-# @app.route('/adicionar_manutencoes', methods=['GET', "POST"])
-# def add_manutencoes():
-#     pass
-
-# @app.route('/adicionar_ocorrencia', methods=['GET', "POST"])
-# def add_ocorrencia():
-#     return redirect('/ocorrencia')
-
-# @app.route('/perfil/<id>', methods=['GET', "POST"])
-# def perfil(id):
-#     pass
-
-
-# if __name__ == '__main__':
-#     app.run(host='127.0.0.1', port=8000, debug=True)
