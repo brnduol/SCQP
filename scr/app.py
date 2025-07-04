@@ -124,6 +124,35 @@ def logout():
     return redirect(url_for('login'))
 
 
+@app.route('/adiciona_ocorrencia', methods=['GET', 'POST'])
+def adiciona_ocorrencia():
+    if 'nome' not in session:
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        descricao = request.form['problema']  
+        data_str = request.form['data_abertura']  
+        data = datetime.strptime(data_str, '%Y-%m-%d').date()
+
+        
+        usuario = Usuario.query.filter_by(nome=session['nome']).first()
+
+        if usuario:
+            nova_ocorrencia = Ocorrencia(
+                problema=descricao,
+                data_abertura=data,
+                id_usuario=usuario.cpf
+            )
+            db.session.add(nova_ocorrencia)
+            db.session.commit()
+            return redirect(url_for('home'))
+        else:
+            return "Usuário não encontrado", 400
+
+    return render_template('home/adiciona_ocorrencia.html', nome=session['nome'])
+
+
+
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True)
