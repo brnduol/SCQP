@@ -55,7 +55,7 @@ def sign_up():
         senha = request.form['senha']
 
         matricula = request.form['matricula']
-        curso = request.form['curso']
+        curso = clean_string(request.form['curso'])
         data_inicio = datetime.strptime(request.form['data_inicio'], '%Y-%m-%d').date()
         data_termino = datetime.strptime(
             request.form['data_termino'], '%Y-%m-%d'
