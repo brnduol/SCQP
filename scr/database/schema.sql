@@ -59,7 +59,7 @@ CREATE TABLE
 
 -- Tabela de dicentes (alunos) vinculados a cursos
 CREATE TABLE
-    IF NOT EXISTS Dicente (
+    IF NOT EXISTS Discente (
         matricula INT PRIMARY KEY, -- Matrícula do aluno
         data_de_inicio DATE NOT NULL, -- Data de início do curso
         data_de_termino DATE, -- Data de término (pode ser NULL)
