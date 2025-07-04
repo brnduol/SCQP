@@ -48,7 +48,16 @@
 
       <!--Atributos especificos do discente -->
       <input type="text" placeholder="Matrícula" name="matricula" required>
-      <input type="text" placeholder="Curso" name="curso" required>
+      
+      <!--<input type="text" placeholder="Curso" name="curso" required>-->
+      <select name="curso" id="curso" required>
+        <option value="">Selecione um Curso</option>
+        {% for c in cursos %}
+            <option value="{{ c.nome }}">{{ c.nome }}</option>
+        {% endfor %}
+      </select>
+
+
       <input type="date" placeholder="Data de início" name="data_inicio" required>
       <input type="date" placeholder="Data prevista de termino" name="data_termino" required>
       <div class="full-width button-container">
@@ -58,6 +67,14 @@
     <div class="button-container">
       <a href="/login" class="switch-btn">Já tem conta? Login</a>
     </div>
+      {% if user_exists %}
+      <script>
+          window.onload = function() {
+              alert("Usuário existente.");
+          };
+      </script>
+      {% endif %}
+
     {% else %}
 
     <form method="post" action="/login">

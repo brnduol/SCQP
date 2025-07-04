@@ -45,7 +45,18 @@
           
           <!--Atributos especificos do docente -->
           <input type="text" placeholder="Matricula" name="matricula" required/>
-          <input type="text" placeholder="Nome Departamento (sigla)" name="nome_departamento" required>
+
+          <!--<input type="text" placeholder="Nome Departamento (sigla)" name="nome_departamento" required>-->
+          <select name="nome_departamento" id="nome_departamento" required>
+              <option value="">Selecione um departamento</option>
+              {% for dep in departamentos %}
+                  <option value="{{ dep.nome }}">{{ dep.nome }}</option>
+              {% endfor %}
+          </select>
+
+
+
+
           <input type="password" placeholder="Senha" name="senha" required>
 
           <div class="full-width button-container">
@@ -55,6 +66,13 @@
         <div class="button-container">
           <a href="/docente/login" class="switch-btn">Já tem conta? Login</a>
         </div>
+        {% if user_exists %}
+        <script>
+            window.onload = function() {
+                alert("Usuário existente.");
+            };
+        </script>
+        {% endif %}
       {% else %}
         <form method="post" action="/docente/login">
           <input type="email"

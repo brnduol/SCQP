@@ -61,7 +61,12 @@ def sign_up():
             request.form['data_termino'], '%Y-%m-%d'
         ).date()
 
-        id_curso = Curso.query.filter_by(nome=curso).first().id
+        #Verificar curso antes
+        pre_id_curso = Curso.query.filter_by(nome=curso).first()
+        if pre_id_curso:
+            id_curso = pre_id_curso.id
+        else:
+            id_curso = None
 
         if verify_credentials_sign_up(cpf=cpf) and id_curso:
             usuario = Usuario(
@@ -87,16 +92,18 @@ def sign_up():
 
             return redirect(url_for('home'))
 
-        return render_template(
+        else:
+            return render_template(
             'log_forms/log_discente.html',
+            user_exists=True,
             invalid_credentials=True,
             sign_up=True,
         )
-
+    cursos = Curso.query.all()
     return (
         redirect(url_for('home'))
         if 'nome' in session
-        else render_template('log_forms/log_discente.html', sign_up=True)
+        else render_template('log_forms/log_discente.html', sign_up=True, cursos=cursos)
     )
 
 

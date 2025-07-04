@@ -55,12 +55,18 @@ def sign_up():
 
         matricula = request.form['matricula']
         nome_departamento = clean_string(request.form['nome_departamento'])
+        
+        #Verificar depto antes
+        departamento = Departamento.query.filter_by(nome=nome_departamento).first()
+        if departamento:
+            id_departamento = departamento.id
+        else:
+            id_departamento = None
 
-        id_departamento = (
-            Departamento.query.filter_by(nome=nome_departamento).first().id
-        )
+        
 
         if verify_credentials_sign_up(cpf=cpf) and id_departamento:
+            print(nome_departamento)
             usuario = Usuario(
                 cpf=cpf,
                 nome=nome,
@@ -81,9 +87,20 @@ def sign_up():
             session['nome'] = request.form['nome']
 
             return redirect(url_for('home'))
+        
+        else:
+            return render_template(
+                'log_forms/log_docente.html',
+                user_exists=True,
+                sign_up=True
+            )
+
+
+    departamentos = Departamento.query.all()
 
     return render_template(
         'log_forms/log_docente.html',
         invalid_credentials=True,
-        sign_up=True,
+        sign_up=True, 
+        departamentos=departamentos,
     )
