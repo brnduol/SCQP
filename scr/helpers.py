@@ -32,11 +32,12 @@ def verify_credentials_sign_up(cpf):
 
 def verify_credentials_login(email, senha, type_usr):
     user = Usuario.query.filter_by(email=email, senha=senha).first()
-    cpf = user.cpf  # type: ignore
+    if user:
+        cpf = user.cpf  # type: ignore
 
-    specific_user = get_user(cpf, type_usr)
+        specific_user = get_user(cpf, type_usr)
 
-    if user and specific_user:
-        return user
+        if user and specific_user:
+            return user
 
     return False
