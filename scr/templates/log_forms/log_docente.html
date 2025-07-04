@@ -37,10 +37,8 @@
         <a href="/funcionario/login" class="account-btn">Funcionário</a>
       </div>
       {% endif %}
-
-
       {% if sign_up %}
-        <form method="post" action="/signup">
+        <form method="post" action="/sign_up">
           <!--Atributos comum a todos -->
           <input type="text" placeholder="CPF" name="cpf" required>
           <input type="text" placeholder="Nome" name="nome" required>
@@ -54,9 +52,7 @@
               <option value="{{ opcao }}">{{ opcao }}</option>
             {% endfor %}
           </select>
-
           <input type="password" placeholder="Senha" name="senha" required>
-          
           <div class="full-width button-container">
             <button type="submit">Criar Conta</button>
           </div>

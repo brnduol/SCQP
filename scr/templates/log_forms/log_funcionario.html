@@ -36,19 +36,15 @@
         <a href="/funcionario/login" class="current-account-btn">Funcionário</a>
       </div>
       {% endif %}
-
-
       {% if sign_up %}
-        <form method="post" action="/signup">
+        <form method="post" action="/sign_up">
           <!--Atributos comum a todos -->
           <input type="text" placeholder="CPF" name="cpf" required>
           <input type="text" placeholder="Nome" name="nome" required>
           <input type="email" placeholder="Email" name="email" required>
 
           <!--Atributos especificos do funcionario -->
-          <input type="text" placeholder="Matricula" name="matricula" required />
-
-
+          <input type="text" placeholder="Matricula" name="matricula" required/>
           <div class="full-width button-container">
             <button type="submit">Criar Conta</button>
           </div>
@@ -57,8 +53,6 @@
           <a href="/funcionario/login" class="switch-btn">Já tem conta? Login</a>
         </div>
       {% else %}
-
-
         <form method="post" action="/login">
           <input type="email"
                  placeholder="Email"
