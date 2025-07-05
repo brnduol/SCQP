@@ -149,7 +149,7 @@ def adiciona_ocorrencia():
         else:
             return "Usuário não encontrado", 400
 
-    return render_template('home/adiciona_ocorrencia.html', nome=session['nome'])
+    return render_template('adicionar/ocorrencia.html', nome=session['nome'])
 
 
 
