@@ -1,7 +1,7 @@
 import unicodedata
 
 from models import Usuario, Discente, Docente, Funcionario, Ocorrencia
-from app import db
+
 
 
 def clean_string(string):
@@ -50,6 +50,7 @@ class OcorrenciaProcedures:
     
     @staticmethod
     def buscar_por_problema(problema):
+        from app import db
         """
         Procedure 1: Buscar ocorrências pelo problema
         """
@@ -70,6 +71,7 @@ class OcorrenciaProcedures:
     
     @staticmethod
     def buscar_por_id(id_ocorrencia):
+        from app import db
         """
         Procedure 2: Buscar ocorrências pelo ID
         """
@@ -90,6 +92,7 @@ class OcorrenciaProcedures:
     
     @staticmethod
     def buscar_por_usuario(nome_usuario):
+        from app import db
         """
         Procedure 3: Buscar ocorrências pelo nome do usuário
         """
@@ -110,6 +113,7 @@ class OcorrenciaProcedures:
     
     @staticmethod
     def listar_todas():
+        from app import db
         """
         Procedure 4: Listar todas as ocorrências (sem filtro)
         """
