@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session
 from datetime import datetime
 
+
 from models import *
 from helpers import *
 
@@ -116,3 +117,43 @@ def adicionar_manutencao():
             return "Usuário não encontrado", 400
 
     return render_template('adicionar/manutencao.html', nome=session['nome'])
+
+
+@funcionario.route('/lista_todas', methods=['GET'])
+def todas_ocorrencias():
+    
+    if 'nome' not in session:
+        return redirect(url_for('funcionario.login'))
+    
+    ocorrencias = OcorrenciaProcedures.listar_todas()
+    return render_template('consultar/ocorrencia.html', 
+                          ocorrencias=ocorrencias, 
+                          nome=session.get('nome'))
+
+
+@funcionario.route('/buscar', methods=['POST'])
+def buscar():
+   
+    if 'nome' not in session:
+        return redirect(url_for('funcionario.login'))
+    
+    tipo_filtro = request.form.get('tipo_filtro')
+    valor_filtro = request.form.get('valor_filtro', '').strip()
+    
+    if not valor_filtro:
+        
+        ocorrencias = OcorrenciaProcedures.listar_todas()
+    else:
+        
+        if tipo_filtro == 'problema':
+            ocorrencias = OcorrenciaProcedures.buscar_por_problema(valor_filtro)
+        elif tipo_filtro == 'id':
+            ocorrencias = OcorrenciaProcedures.buscar_por_id(valor_filtro)
+        elif tipo_filtro == 'usuario':
+            ocorrencias = OcorrenciaProcedures.buscar_por_usuario(valor_filtro)
+        else:
+            ocorrencias = OcorrenciaProcedures.listar_todas()
+    
+    return render_template('consultar/ocorrencia.html', 
+                          ocorrencias=ocorrencias,
+                          nome=session.get('nome'))

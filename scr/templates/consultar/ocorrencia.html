@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocorrências</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/consulta_ocorrencia.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <span class="scpq-text">SCPQ</span>
+            <span class="greeting">Olá {{ nome }}</span>
+        </div>
+        <div class="header-right">
+            <button class="settings-btn">Configurações</button>
+            <a href="/logout" class="logout-icon" title="Logout">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d4966" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Ocorrências</h1>
+        
+        <!-- Formulário de Busca -->
+        <form method="POST" action="{{ url_for('funcionario.buscar') }}" class="search-form">
+            <div class="search-container">
+                <input type="hidden" name="tipo_filtro" value="id">
+                <input type="text" name="valor_filtro" placeholder="Pesquisar ocorrência pelo id" class="search-input">
+                <button type="submit" class="search-btn">Buscar</button>
+            </div>
+        </form>
+
+        <!-- Filtros Adicionais -->
+        <div class="filters-section">
+            <form method="POST" action="{{ url_for('funcionario.buscar') }}" class="filters-form">
+                <div class="filter-group">
+                    <label for="tipo_filtro">Tipo de Filtro:</label>
+                    <select name="tipo_filtro" id="tipo_filtro">
+                        <option value="problema">Buscar por Problema</option>
+                        <option value="id">Buscar por ID</option>
+                        <option value="usuario">Buscar por Usuário</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="valor_filtro">Valor:</label>
+                    <input type="text" name="valor_filtro" id="valor_filtro" placeholder="Digite o valor para buscar...">
+                </div>
+                
+                <div class="filter-buttons">
+                    <button type="submit" class="filter-btn">Aplicar Filtro</button>
+                    <a href="{{ url_for('funcionario.todas_ocorrencias') }}" class="clear-btn">Limpar</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Lista de Ocorrências -->
+        <div class="occurrences-list">
+            {% if ocorrencias %}
+                {% for ocorrencia in ocorrencias %}
+                <div class="occurrence-card">
+                    <div class="occurrence-header">
+                        <div class="occurrence-id">#{{ ocorrencia.id }}</div>
+                        <div class="occurrence-status status-{{ 'aberta' if not ocorrencia.data_fechamento else 'fechada' }}">
+                            {{ 'Aberta' if not ocorrencia.data_fechamento else 'Fechada' }}
+                        </div>
+                    </div>
+                    
+                    <div class="occurrence-info">
+                        <div class="occurrence-description">
+                            <strong>Problema:</strong> {{ ocorrencia.problema or 'Não informado' }}
+                        </div>
+                        
+                        <div class="occurrence-details">
+                            <div class="detail-item">
+                                <strong>Usuário:</strong> {{ ocorrencia.nome_usuario }}
+                            </div>
+                            <div class="detail-item">
+                                <strong>Data Abertura:</strong> {{ ocorrencia.data_abertura.strftime('%d/%m/%Y') if ocorrencia.data_abertura else 'N/A' }}
+                            </div>
+                            {% if ocorrencia.data_fechamento %}
+                            <div class="detail-item">
+                                <strong>Data Fechamento:</strong> {{ ocorrencia.data_fechamento.strftime('%d/%m/%Y') }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-occurrences">
+                    <p>Nenhuma ocorrência encontrada.</p>
+                    <a href="{{ url_for('funcionario.index') }}" class="reload-btn">Recarregar lista</a>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Contador de Resultados -->
+        <div class="results-count">
+            <p>Total: {{ ocorrencias|length }} ocorrência(s) encontrada(s)</p>
+        </div>
+    </main>
+</body>
+</html>
