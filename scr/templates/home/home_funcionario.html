@@ -40,9 +40,9 @@
     </div>
     <div class="main-content">
       <div class="button-list">
-        <button class="main-btn">Adicionar ocorrência</button>
+        <a href="{{ url_for('adiciona_ocorrencia') }}" class="main-btn">Adicionar ocorrência</a>
         <button class="main-btn">Ver minhas ocorrências</button>
-        <button class="main-btn">Adicionar manutenções</button>
+        <a href="{{ url_for('funcionario.adicionar_manutencao') }}" class="main-btn">Adicionar manutenções</a>
         <button class="main-btn">Ver todas manutenções</button>
       </div>
     </div>
