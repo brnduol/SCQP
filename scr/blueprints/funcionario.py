@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session
-
+from datetime import datetime
 
 from models import *
 from helpers import *
@@ -85,3 +85,34 @@ def home():
     if 'nome' in session:
         return render_template('home/home_funcionario.html', nome=session['nome'])
     return render_template('home/home_funcionario.html', not_login=True)
+
+@funcionario.route('/adicionar_manutencao', methods=['GET', 'POST'])
+def adicionar_manutencao():
+    if 'nome' not in session:
+        return redirect(url_for('funcionario.login'))
+
+    if request.method == 'POST':
+        servico = request.form['servico']
+        id_equipamento = request.form['id_equipamento']
+        data_str = request.form['data_manutencao']
+        id_ocorrencia = request.form.get('id_ocorrencia')  
+        data = datetime.strptime(data_str, '%Y-%m-%d').date()
+        usuario = Usuario.query.filter_by(nome=session['nome']).first()
+        
+        if usuario:  
+            nova_manutencao = Manutencao(
+                servico=servico,
+                id_equipamento=id_equipamento,
+                data=data,
+                id_ocorrencia=id_ocorrencia if id_ocorrencia else None,
+                id_funcionario=usuario.cpf
+            )
+            
+            db.session.add(nova_manutencao)
+            db.session.commit()
+            
+            return redirect(url_for('funcionario.home'))
+        else:
+            return "Usuário não encontrado", 400
+
+    return render_template('adicionar/manutencao.html', nome=session['nome'])
