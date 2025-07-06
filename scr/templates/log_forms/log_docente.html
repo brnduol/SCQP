@@ -47,10 +47,10 @@
           <input type="text" placeholder="Matricula" name="matricula" required/>
 
           <!--<input type="text" placeholder="Nome Departamento (sigla)" name="nome_departamento" required>-->
-          <select name="nome_departamento" id="nome_departamento" required>
+          <select name="id" id="id" required>
               <option value="">Selecione um departamento</option>
               {% for dep in departamentos %}
-                  <option value="{{ dep.nome }}">{{ dep.nome }}</option>
+                  <option value="{{ dep.id }}">{{ dep.nome }}</option>
               {% endfor %}
           </select>
 

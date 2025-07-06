@@ -134,7 +134,7 @@ def todas_ocorrencias():
     ocorrencias = OcorrenciaProcedures.listar_todas()
     return render_template('consultar/ocorrencia.html', 
                           ocorrencias=ocorrencias, 
-                          nome=session.get('nome'))
+                          nome=session.get('nome'), tipo_usuario='funcionario')
 
 
 @funcionario.route('/buscar', methods=['POST'])

@@ -21,6 +21,7 @@ app.register_blueprint(funcionario, url_prefix='/funcionario')
 app.register_blueprint(docente, url_prefix='/docente')
 
 
+
 @app.route('/')
 def index():
     return redirect(url_for('login'))
@@ -37,6 +38,7 @@ def login():
         )
         if user_credentials:
             session['nome'] = user_credentials.nome
+            session['id'] = user_credentials.cpf
             return redirect(url_for('home'))
 
         return render_template('log_forms/log_discente.html')
@@ -102,6 +104,7 @@ def sign_up():
             sign_up=True,
         )
     cursos = Curso.query.all()
+    print(cursos)
     return (
         redirect(url_for('home'))
         if 'nome' in session
@@ -153,6 +156,31 @@ def adiciona_ocorrencia():
 
     return render_template('adicionar/ocorrencia.html', nome=session['nome'])
 
+def get_ocorrencias(termo_busca=None):
+    
+    id_usuario = session['id']
+    print(id_usuario)
+    query = Ocorrencia.query.filter_by(id_usuario=id_usuario)
+
+    if termo_busca:
+        query = query.filter(Ocorrencia.problema.ilike(f"%{termo_busca}%"))
+
+    return query.all()
+
+@app.route('/minhas_ocorrencias', methods=['GET', 'POST'])
+def minhas_ocorrencias():
+    if 'nome' not in session:
+        return redirect(url_for('login'))
+    
+    
+    if request.method == 'POST':
+        if request.termo_busca:
+           ocorrencias = get_ocorrencias(request.termo_busca)
+    else:
+        ocorrencias = get_ocorrencias()
+
+            
+    return render_template('consultar/ocorrencia.html', nome=session['nome'], ocorrencias=ocorrencias, usuario = None)
 
 
 if __name__ == '__main__':

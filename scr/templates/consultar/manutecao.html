@@ -26,49 +26,38 @@
 
     <main class="container">
         <h1>Ocorrências</h1>
-        {% if (usuario == 'funcionario')   %}
-            <!-- Formulário de Busca Principal (por Problema) -->
-            <form method="POST" action="{{ url_for('funcionario.buscar') }}" class="search-form">
-                <div class="search-container">
-                    <input type="hidden" name="tipo_filtro" value="problema">
-                    <input type="text" name="valor_filtro" placeholder="Pesquisar ocorrência pelo problema" class="search-input">
-                    <button type="submit" class="search-btn">Buscar</button>
+        
+        <!-- Formulário de Busca Principal (por Problema) -->
+        <form method="POST" action="{{ url_for('funcionario.buscar') }}" class="search-form">
+            <div class="search-container">
+                <input type="hidden" name="tipo_filtro" value="problema">
+                <input type="text" name="valor_filtro" placeholder="Pesquisar ocorrência pelo problema" class="search-input">
+                <button type="submit" class="search-btn">Buscar</button>
+            </div>
+        </form>
+
+        <!-- Filtros Adicionais -->
+        <div class="filters-section">
+            <form method="POST" action="{{ url_for('funcionario.buscar') }}" class="filters-form">
+                <div class="filter-group">
+                    <label for="tipo_filtro">Tipo de Filtro:</label>
+                    <select name="tipo_filtro" id="tipo_filtro">
+                        <option value="usuario">Buscar por Usuário</option>
+                        <option value="id">Buscar por ID</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="valor_filtro">Valor:</label>
+                    <input type="text" name="valor_filtro" id="valor_filtro" placeholder="Digite o valor para buscar...">
+                </div>
+                
+                <div class="filter-buttons">
+                    <button type="submit" class="filter-btn">Aplicar Filtro</button>
+                    <a href="{{ url_for('funcionario.todas_ocorrencias') }}" class="clear-btn">Limpar</a>
                 </div>
             </form>
-
-            <!-- Filtros Adicionais -->
-            <div class="filters-section">
-                <form method="POST" action="{{ url_for('funcionario.buscar') }}" class="filters-form">
-                    <div class="filter-group">
-                        <label for="tipo_filtro">Tipo de Filtro:</label>
-                        <select name="tipo_filtro" id="tipo_filtro">
-                            <option value="usuario">Buscar por Usuário</option>
-                            <option value="id">Buscar por ID</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label for="valor_filtro">Valor:</label>
-                        <input type="text" name="valor_filtro" id="valor_filtro" placeholder="Digite o valor para buscar...">
-                    </div>
-                    
-                    <div class="filter-buttons">
-                        <button type="submit" class="filter-btn">Aplicar Filtro</button>
-                        <a href="{{ url_for('funcionario.todas_ocorrencias') }}" class="clear-btn">Limpar</a>
-                    </div>
-                </form>
-            </div>
-
-        {% else %}
-
-                <div class="search-container">
-                    <input type="hidden" name="tipo_filtro" value="problema">
-                    <input type="text" name="valor_filtro" placeholder="Pesquisar ocorrência pelo problema" class="search-input">
-                    <button type="submit" class="search-btn">Buscar</button>
-                </div>
-
-        {% endif %}
-        
+        </div>
 
         <!-- Lista de Ocorrências -->
         <div class="occurrences-list">
@@ -106,6 +95,7 @@
             {% else %}
                 <div class="no-occurrences">
                     <p>Nenhuma ocorrência encontrada.</p>
+                    <a href="{{ url_for('funcionario.index') }}" class="reload-btn">Recarregar lista</a>
                 </div>
             {% endif %}
         </div>

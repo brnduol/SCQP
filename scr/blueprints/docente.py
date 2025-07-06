@@ -22,6 +22,31 @@ def index():
 # def sign_up():
 #     return render_template('log_forms/log_docente.html', sign_up=True)
 
+def get_ocorrencias(termo_busca=None):
+    
+    id_usuario = session['id']
+    print(id_usuario)
+    query = Ocorrencia.query.filter_by(id_usuario=id_usuario)
+
+    if termo_busca:
+        query = query.filter(Ocorrencia.problema.ilike(f"%{termo_busca}%"))
+
+    return query.all()
+
+@docente.route('/minhas_ocorrencias', methods=['GET', 'POST'])
+def minhas_ocorrencias():
+    if 'nome' not in session:
+        return redirect(url_for('login'))
+    
+    
+    if request.method == 'POST':
+        if request.termo_busca:
+           ocorrencias = get_ocorrencias(request.termo_busca)
+    else:
+        ocorrencias = get_ocorrencias()
+
+            
+    return render_template('consultar/ocorrencia.html', nome=session['nome'], ocorrencias=ocorrencias, usuario = None)
 
 @docente.route('/login', methods=['GET', 'POST'])
 def login():
@@ -34,6 +59,7 @@ def login():
         )
         if user_credentials:
             session['nome'] = user_credentials.nome
+            session['id'] = user_credentials.cpf
             return redirect(url_for('home'))
 
         return render_template('log_forms/log_docente.html')
@@ -54,10 +80,11 @@ def sign_up():
         senha = request.form['senha']
 
         matricula = request.form['matricula']
-        nome_departamento = clean_string(request.form['nome_departamento'])
+        id_departamento = request.form['id']
         
         #Verificar depto antes
-        departamento = Departamento.query.filter_by(nome=nome_departamento).first()
+        departamento = Departamento.query.filter_by(id=id_departamento).first()
+        print()
         if departamento:
             id_departamento = departamento.id
         else:
@@ -66,7 +93,7 @@ def sign_up():
         
 
         if verify_credentials_sign_up(cpf=cpf) and id_departamento:
-            print(nome_departamento)
+
             usuario = Usuario(
                 cpf=cpf,
                 nome=nome,
