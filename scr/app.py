@@ -169,18 +169,26 @@ def get_ocorrencias(termo_busca=None):
 
 @app.route('/minhas_ocorrencias', methods=['GET', 'POST'])
 def minhas_ocorrencias():
-    if 'nome' not in session:
+    if 'nome' not in session or 'id' not in session:
         return redirect(url_for('login'))
-    
-    
-    if request.method == 'POST':
-        if request.termo_busca:
-           ocorrencias = get_ocorrencias(request.termo_busca)
-    else:
-        ocorrencias = get_ocorrencias()
 
-            
-    return render_template('consultar/ocorrencia.html', nome=session['nome'], ocorrencias=ocorrencias, usuario = None)
+    termo_busca = None
+    ocorrencias = []
+
+    if request.method == 'POST':
+        termo_busca = request.form.get('termo_busca')
+
+    ocorrencias = OcorrenciaProcedures.listar_por_usuario_logado(
+        id_usuario=session['id'],
+        termo_busca=termo_busca
+    )
+
+    return render_template(
+        'consultar/ocorrencia.html',
+        nome=session['nome'],
+        ocorrencias=ocorrencias,
+        usuario=None
+    )
 
 
 if __name__ == '__main__':

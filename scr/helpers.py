@@ -125,9 +125,33 @@ class OcorrenciaProcedures:
         except Exception as e:
             print(f"Erro ao listar todas as ocorrências: {e}")
             return []
+
+    @staticmethod
+    def listar_por_usuario_logado(id_usuario, termo_busca=None):
+        from app import db
+        """
+        Procedure 5: Listar ocorrências apenas do usuário logado, com filtro opcional
+        """
+        try:
+            query = db.session.query(
+                Ocorrencia.id,
+                Ocorrencia.problema,
+                Ocorrencia.data_abertura,
+                Ocorrencia.data_fechamento,
+                Usuario.nome.label('nome_usuario')
+            ).join(Usuario, Ocorrencia.id_usuario == Usuario.cpf)\
+            .filter(Ocorrencia.id_usuario == id_usuario)
+
+            if termo_busca:
+                query = query.filter(Ocorrencia.problema.ilike(f'%{termo_busca}%'))
+
+            return query.order_by(Ocorrencia.data_abertura.desc()).all()
         
-from datetime import date
-from models import db, Manutencao
+        except Exception as e:
+            print(f"Erro ao listar ocorrências do usuário logado: {e}")
+            return []
+        
+
 
 class EquipamentoProcedures:
 
