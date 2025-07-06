@@ -136,6 +136,21 @@ def todas_ocorrencias():
                           ocorrencias=ocorrencias, 
                           nome=session.get('nome'), tipo_usuario='funcionario')
 
+@funcionario.route('/manutencoes', methods=['GET'])
+def todas_manutencoes():
+    if 'nome' not in session:
+        return redirect(url_for('funcionario.login'))
+
+    manutencoes = ManutencaoProcedures.listar_todas()
+    return render_template(
+        'consultar/manutencao.html',  # novo template que você adaptou
+        manutencoes=manutencoes,
+        nome=session.get('nome'),
+        tipo_usuario='funcionario'
+    )
+@funcionario.route('/buscar_manutencoes', methods=['GET'])
+def buscar_manutencao():
+    pass
 
 @funcionario.route('/buscar', methods=['POST'])
 def buscar():

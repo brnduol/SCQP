@@ -25,85 +25,85 @@
     </header>
 
     <main class="container">
-        <h1>Ocorrências</h1>
-        
-        <!-- Formulário de Busca Principal (por Problema) -->
-        <form method="POST" action="{{ url_for('funcionario.buscar') }}" class="search-form">
+        <h1>Manutenções</h1>
+    
+        <!-- Formulário de Busca Principal (por Serviço) -->
+        <form method="POST" action="{{ url_for('funcionario.buscar_manutencao') }}" class="search-form">
             <div class="search-container">
-                <input type="hidden" name="tipo_filtro" value="problema">
-                <input type="text" name="valor_filtro" placeholder="Pesquisar ocorrência pelo problema" class="search-input">
+                <input type="hidden" name="tipo_filtro" value="servico">
+                <input type="text" name="valor_filtro" placeholder="Pesquisar manutenção pelo serviço" class="search-input">
                 <button type="submit" class="search-btn">Buscar</button>
             </div>
         </form>
-
+    
         <!-- Filtros Adicionais -->
         <div class="filters-section">
-            <form method="POST" action="{{ url_for('funcionario.buscar') }}" class="filters-form">
+            <form method="POST" action="{{ url_for('funcionario.buscar_manutencao') }}" class="filters-form">
                 <div class="filter-group">
                     <label for="tipo_filtro">Tipo de Filtro:</label>
                     <select name="tipo_filtro" id="tipo_filtro">
-                        <option value="usuario">Buscar por Usuário</option>
+                        <option value="funcionario">Buscar por Funcionário</option>
                         <option value="id">Buscar por ID</option>
+                        <option value="equipamento">Buscar por Equipamento</option>
                     </select>
                 </div>
-                
+    
                 <div class="filter-group">
                     <label for="valor_filtro">Valor:</label>
                     <input type="text" name="valor_filtro" id="valor_filtro" placeholder="Digite o valor para buscar...">
                 </div>
-                
+    
                 <div class="filter-buttons">
                     <button type="submit" class="filter-btn">Aplicar Filtro</button>
-                    <a href="{{ url_for('funcionario.todas_ocorrencias') }}" class="clear-btn">Limpar</a>
+                    <a href="{{ url_for('funcionario.todas_manutencoes') }}" class="clear-btn">Limpar</a>
                 </div>
             </form>
         </div>
-
-        <!-- Lista de Ocorrências -->
+    
+        <!-- Lista de Manutenções -->
         <div class="occurrences-list">
-            {% if ocorrencias %}
-                {% for ocorrencia in ocorrencias %}
+            {% if manutencoes %}
+                {% for m in manutencoes %}
                 <div class="occurrence-card">
                     <div class="occurrence-header">
-                        <div class="occurrence-id">#{{ ocorrencia.id }}</div>
-                        <div class="occurrence-status status-{{ 'aberta' if not ocorrencia.data_fechamento else 'fechada' }}">
-                            {{ 'Aberta' if not ocorrencia.data_fechamento else 'Fechada' }}
+                        <div class="occurrence-id">#{{ m.id }}</div>
+                        <div class="occurrence-status status-normal">
+                            {{ m.data.strftime('%d/%m/%Y') if m.data else 'Sem data' }}
                         </div>
                     </div>
-                    
+    
                     <div class="occurrence-info">
                         <div class="occurrence-description">
-                            <strong>Problema:</strong> {{ ocorrencia.problema or 'Não informado' }}
+                            <strong>Serviço:</strong> {{ m.servico or 'Não informado' }}
                         </div>
-                        
+    
                         <div class="occurrence-details">
                             <div class="detail-item">
-                                <strong>Usuário:</strong> {{ ocorrencia.nome_usuario }}
+                                <strong>Funcionário:</strong> {{ m.nome_funcionario or 'N/A' }}
                             </div>
                             <div class="detail-item">
-                                <strong>Data Abertura:</strong> {{ ocorrencia.data_abertura.strftime('%d/%m/%Y') if ocorrencia.data_abertura else 'N/A' }}
+                                <strong>Equipamento ID:</strong> {{ m.id_equipamento }}
                             </div>
-                            {% if ocorrencia.data_fechamento %}
                             <div class="detail-item">
-                                <strong>Data Fechamento:</strong> {{ ocorrencia.data_fechamento.strftime('%d/%m/%Y') }}
+                                <strong>Ocorrência ID:</strong> {{ m.id_ocorrencia or '---' }}
                             </div>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             {% else %}
                 <div class="no-occurrences">
-                    <p>Nenhuma ocorrência encontrada.</p>
+                    <p>Nenhuma manutenção encontrada.</p>
                     <a href="{{ url_for('funcionario.index') }}" class="reload-btn">Recarregar lista</a>
                 </div>
             {% endif %}
         </div>
-
+    
         <!-- Contador de Resultados -->
         <div class="results-count">
-            <p>Total: {{ ocorrencias|length }} ocorrência(s) encontrada(s)</p>
+            <p>Total: {{ manutencoes|length }} manutenção(ões) encontrada(s)</p>
         </div>
     </main>
+    
 </body>
 </html>
