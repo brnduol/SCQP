@@ -10,7 +10,7 @@ db = SQLAlchemy()
 
 class Predio(db.Model):
     __tablename__ = 'Predio'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(100))
     local = db.Column(db.String(100))
     departamentos = db.relationship(
@@ -21,7 +21,7 @@ class Predio(db.Model):
 
 class Departamento(db.Model):
     __tablename__ = 'Departamento'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(100))
     id_predio = db.Column(db.Integer, db.ForeignKey('Predio.id', ondelete='CASCADE'))
     cursos = db.relationship('Curso', backref='departamento', cascade='all, delete')
@@ -30,7 +30,7 @@ class Departamento(db.Model):
 
 class Curso(db.Model):
     __tablename__ = 'Curso'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(100))
     id_departamento = db.Column(
         db.Integer, db.ForeignKey('Departamento.id', ondelete='CASCADE')
@@ -103,7 +103,6 @@ class Sala(db.Model):
     __tablename__ = 'Sala'
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100))
-    foto_binaria = db.Column(db.LargeBinary)
     id_predio = db.Column(db.Integer, db.ForeignKey('Predio.id', ondelete='CASCADE'))
     equipamentos = db.relationship('Equipamento', backref='sala', cascade='all, delete')
 
@@ -129,6 +128,7 @@ class Equipamento(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data_aquisicao = db.Column(db.Date)
     fabricante = db.Column(db.String(100))
+    foto_binaria = db.Column(db.LargeBinary)
     id_tipo = db.Column(
         db.Integer, db.ForeignKey('TipoEquipamento.id', ondelete='CASCADE')
     )
@@ -148,7 +148,7 @@ class Equipamento(db.Model):
 
 class Ocorrencia(db.Model):
     __tablename__ = 'Ocorrencia'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     problema = db.Column(db.String(255))
     data_abertura = db.Column(db.Date)
     data_fechamento = db.Column(db.Date)
@@ -162,7 +162,7 @@ class Ocorrencia(db.Model):
 
 class Manutencao(db.Model):
     __tablename__ = 'Manutencao'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     servico = db.Column(db.String(255))
     data = db.Column(db.Date)
     id_equipamento = db.Column(

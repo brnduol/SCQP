@@ -110,6 +110,12 @@ def adicionar_manutencao():
             )
             
             db.session.add(nova_manutencao)
+            
+            if id_ocorrencia:
+                ocorrencia = Ocorrencia.query.get(id_ocorrencia)
+                if ocorrencia and not ocorrencia.data_fechamento:
+                    ocorrencia.data_fechamento = data
+
             db.session.commit()
             
             return redirect(url_for('funcionario.home'))

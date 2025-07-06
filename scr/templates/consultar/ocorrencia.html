@@ -27,11 +27,11 @@
     <main class="container">
         <h1>Ocorrências</h1>
         
-        <!-- Formulário de Busca -->
+        <!-- Formulário de Busca Principal (por Problema) -->
         <form method="POST" action="{{ url_for('funcionario.buscar') }}" class="search-form">
             <div class="search-container">
-                <input type="hidden" name="tipo_filtro" value="id">
-                <input type="text" name="valor_filtro" placeholder="Pesquisar ocorrência pelo id" class="search-input">
+                <input type="hidden" name="tipo_filtro" value="problema">
+                <input type="text" name="valor_filtro" placeholder="Pesquisar ocorrência pelo problema" class="search-input">
                 <button type="submit" class="search-btn">Buscar</button>
             </div>
         </form>
@@ -42,9 +42,8 @@
                 <div class="filter-group">
                     <label for="tipo_filtro">Tipo de Filtro:</label>
                     <select name="tipo_filtro" id="tipo_filtro">
-                        <option value="problema">Buscar por Problema</option>
-                        <option value="id">Buscar por ID</option>
                         <option value="usuario">Buscar por Usuário</option>
+                        <option value="id">Buscar por ID</option>
                     </select>
                 </div>
                 

@@ -9,6 +9,8 @@ from blueprints.funcionario import funcionario
 from blueprints.docente import docente
 from blueprints.funcionario import funcionario
 
+
+
 app = Flask(__name__)
 app.secret_key = '42'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
@@ -154,5 +156,8 @@ def adiciona_ocorrencia():
 
 
 if __name__ == '__main__':
+
+    
     db.create_all()
     app.run(debug=True)
+   
