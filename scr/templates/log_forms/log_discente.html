@@ -50,10 +50,10 @@
       <input type="text" placeholder="Matrícula" name="matricula" required>
       
       <!--<input type="text" placeholder="Curso" name="curso" required>-->
-      <select name="curso" id="curso" required>
+      <select name="id_curso" id="id_curso" required>
         <option value="">Selecione um Curso</option>
         {% for c in cursos %}
-            <option value="{{ c.nome }}">{{ c.nome }}</option>
+            <option value="{{ c.id }}">{{ c.nome }}</option>
         {% endfor %}
       </select>
 

@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template, redirect, url_for, request, session, flash
 
 from models import *
 from helpers import *
@@ -52,25 +52,22 @@ def login():
 
 @app.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
+    cursos = Curso.query.all()
     if request.method == 'POST':
         cpf = request.form['cpf']
         nome = request.form['nome']
         email = request.form['email']
         senha = request.form['senha']
+        id_curso = request.form['id_curso']
 
         matricula = request.form['matricula']
-        curso = clean_string(request.form['curso'])
+        # curso = clean_string(request.form['curso'])
         data_inicio = datetime.strptime(request.form['data_inicio'], '%Y-%m-%d').date()
         data_termino = datetime.strptime(
             request.form['data_termino'], '%Y-%m-%d'
         ).date()
 
         #Verificar curso antes
-        pre_id_curso = Curso.query.filter_by(nome=curso).first()
-        if pre_id_curso:
-            id_curso = pre_id_curso.id
-        else:
-            id_curso = None
 
         if verify_credentials_sign_up(cpf=cpf) and id_curso:
             usuario = Usuario(
@@ -101,10 +98,10 @@ def sign_up():
             'log_forms/log_discente.html',
             user_exists=True,
             invalid_credentials=True,
-            sign_up=True,
+            sign_up=True, cursos=cursos,
         )
-    cursos = Curso.query.all()
-    print(cursos)
+    
+
     return (
         redirect(url_for('home'))
         if 'nome' in session
@@ -189,6 +186,15 @@ def minhas_ocorrencias():
         ocorrencias=ocorrencias,
         usuario=None
     )
+
+
+@app.route('/ocorrencia/excluir/<int:id_ocorrencia>', methods=['POST'])
+def excluir_ocorrencia(id_ocorrencia):
+    if OcorrenciaProcedures.excluir_por_id(id_ocorrencia):
+        flash('Ocorrência excluída com sucesso.', 'success')
+    else:
+        flash('Erro ao excluir ocorrência.', 'danger')
+    return redirect(url_for('home'))  # ou a página de ocorrências
 
 
 if __name__ == '__main__':

@@ -150,7 +150,25 @@ class OcorrenciaProcedures:
         except Exception as e:
             print(f"Erro ao listar ocorrências do usuário logado: {e}")
             return []
-        
+    @staticmethod
+    def excluir_por_id(id_ocorrencia):
+        from app import db
+        """
+        Procedure 6: Excluir ocorrência pelo ID
+        """
+        try:
+            ocorrencia = db.session.query(Ocorrencia).get(int(id_ocorrencia))
+            if ocorrencia:
+                db.session.delete(ocorrencia)
+                db.session.commit()
+                return True  # sucesso
+            else:
+                print(f"Ocorrência com ID {id_ocorrencia} não encontrada.")
+                return False  # não encontrada
+        except Exception as e:
+            db.session.rollback()  # desfaz qualquer mudança se houver erro
+            print(f"Erro ao excluir ocorrência: {e}")
+            return False
 
 
 class EquipamentoProcedures:
