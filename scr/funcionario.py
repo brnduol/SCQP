@@ -11,8 +11,12 @@ funcionario = Blueprint(
 
 
 @funcionario.route('/')
-def index():
-    return redirect(url_for('login'))
+@funcionario.route('/home')
+def home():
+    if 'nome' in session:
+        return render_template('home/home_funcionario.html', nome=session['nome'])
+    # TODO adicionar lógica flag
+    return redirect(url_for('funcionario.login'))
 
 
 @funcionario.route('/login', methods=['GET', 'POST'])
@@ -34,8 +38,8 @@ def login():
         return render_template('log_forms/log_funcionario.html')
 
     return (
-        redirect(url_for('home'))
-        if 'name' in session
+        redirect(url_for('funcionario.home'))
+        if 'nome' in session
         else render_template('log_forms/log_funcionario.html')
     )
 
@@ -84,13 +88,6 @@ def sign_up():
         if 'nome' in session
         else render_template('log_forms/log_funcionario.html', sign_up=True)
     )
-
-
-@funcionario.route('/home')
-def home():
-    if 'nome' in session:
-        return render_template('home/home_funcionario.html', nome=session['nome'])
-    return render_template('home/home_funcionario.html', not_login=True)
 
 
 @funcionario.route('/adicionar_manutencao', methods=['GET', 'POST'])

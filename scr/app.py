@@ -14,12 +14,8 @@ from io import BytesIO
 from models import *
 from helpers import *
 from procedures import *
-from blueprints.docente import docente
-from blueprints.funcionario import funcionario
-
-from blueprints.docente import docente
-from blueprints.funcionario import funcionario
-
+from docente import docente
+from funcionario import funcionario
 
 app = Flask(__name__)
 app.secret_key = '42'
