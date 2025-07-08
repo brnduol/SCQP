@@ -4,7 +4,6 @@ AS $$
 BEGIN
     DELETE FROM ocorrencia WHERE id = id_oc;
 
-    -- Opcional: você pode verificar se realmente foi deletado
     IF NOT FOUND THEN
         RAISE NOTICE 'Ocorrência com ID % não encontrada.', id_oc;
     ELSE
