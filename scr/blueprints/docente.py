@@ -22,8 +22,9 @@ def index():
 # def sign_up():
 #     return render_template('log_forms/log_docente.html', sign_up=True)
 
+
 def get_ocorrencias(termo_busca=None):
-    
+
     id_usuario = session['id']
     print(id_usuario)
     query = Ocorrencia.query.filter_by(id_usuario=id_usuario)
@@ -33,20 +34,25 @@ def get_ocorrencias(termo_busca=None):
 
     return query.all()
 
+
 @docente.route('/minhas_ocorrencias', methods=['GET', 'POST'])
 def minhas_ocorrencias():
     if 'nome' not in session:
         return redirect(url_for('login'))
-    
-    
+
     if request.method == 'POST':
         if request.termo_busca:
-           ocorrencias = get_ocorrencias(request.termo_busca)
+            ocorrencias = get_ocorrencias(request.termo_busca)
     else:
         ocorrencias = get_ocorrencias()
 
-            
-    return render_template('consultar/ocorrencia.html', nome=session['nome'], ocorrencias=ocorrencias, usuario = None)
+    return render_template(
+        'consultar/ocorrencia.html',
+        nome=session['nome'],
+        ocorrencias=ocorrencias,
+        usuario=None,
+    )
+
 
 @docente.route('/login', methods=['GET', 'POST'])
 def login():
@@ -60,6 +66,8 @@ def login():
         if user_credentials:
             session['nome'] = user_credentials.nome
             session['id'] = user_credentials.cpf
+            session['user_type'] = 'docente'
+
             return redirect(url_for('home'))
 
         return render_template('log_forms/log_docente.html')
@@ -81,8 +89,8 @@ def sign_up():
 
         matricula = request.form['matricula']
         id_departamento = request.form['id']
-        
-        #Verificar depto antes
+
+        # Verificar depto antes
         departamento = Departamento.query.filter_by(id=id_departamento).first()
         print()
         if departamento:
@@ -90,10 +98,7 @@ def sign_up():
         else:
             id_departamento = None
 
-        
-
         if verify_credentials_sign_up(cpf=cpf) and id_departamento:
-
             usuario = Usuario(
                 cpf=cpf,
                 nome=nome,
@@ -112,22 +117,21 @@ def sign_up():
             db.session.commit()
 
             session['nome'] = request.form['nome']
+            session['id'] = request.form['cpf']
+            session['user_type'] = 'docente'
 
             return redirect(url_for('home'))
-        
+
         else:
             return render_template(
-                'log_forms/log_docente.html',
-                user_exists=True,
-                sign_up=True
+                'log_forms/log_docente.html', user_exists=True, sign_up=True
             )
-
 
     departamentos = Departamento.query.all()
 
     return render_template(
         'log_forms/log_docente.html',
         invalid_credentials=True,
-        sign_up=True, 
+        sign_up=True,
         departamentos=departamentos,
     )

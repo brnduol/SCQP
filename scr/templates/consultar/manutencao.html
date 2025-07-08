@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="description" content="foo" />
+    <meta name="keywords" content="foo,bar" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ocorrências</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/consulta_ocorrencia.css') }}">
 </head>
 <body>
     <header class="header">
         <div class="header-left">
-            <span class="scpq-text">SCPQ</span>
+            <a href="{{url_for('funcionario.home')}}" class="scpq-text" title="Logout">SCPQ</a>
             <span class="greeting">Olá {{ nome }}</span>
         </div>
         <div class="header-right">
-            <button class="settings-btn">Configurações</button>
+        <a href="{{url_for('configuracoes')}}" class="settings-btn" title="Configurações">Configurações</a>
             <a href="/logout" class="logout-icon" title="Logout">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d4966" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -28,7 +30,7 @@
         <h1>Manutenções</h1>
     
         <!-- Formulário de Busca Principal (por Serviço) -->
-        <form method="POST" action="{{ url_for('funcionario.buscar_manutencao') }}" class="search-form">
+        <form method="post" action="{{ url_for('funcionario.buscar_manutencao') }}" class="search-form">
             <div class="search-container">
                 <input type="hidden" name="tipo_filtro" value="servico">
                 <input type="text" name="valor_filtro" placeholder="Pesquisar manutenção pelo serviço" class="search-input">
@@ -38,7 +40,7 @@
     
         <!-- Filtros Adicionais -->
         <div class="filters-section">
-            <form method="POST" action="{{ url_for('funcionario.buscar_manutencao') }}" class="filters-form">
+            <form method="post" action="{{ url_for('funcionario.buscar_manutencao') }}" class="filters-form">
                 <div class="filter-group">
                     <label for="tipo_filtro">Tipo de Filtro:</label>
                     <select name="tipo_filtro" id="tipo_filtro">

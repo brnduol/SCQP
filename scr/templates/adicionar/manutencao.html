@@ -2,19 +2,21 @@
 <html lang="pt">
     
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="description" content="foo" />
+    <meta name="keywords" content="foo,bar" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Página adicionar manutenção</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/adiciona_manutencao.css') }}">
 </head>
 <body>
   <header class="header">
     <div class="header-left">
-      <span class="scpq-text">SCPQ</span>
+        <a href="{{url_for('funcionario.home')}}" class="scpq-text" title="Logout">SCPQ</a>
       <span class="greeting">Olá {{ nome }}</span>
     </div>
     <div class="header-right">
-      <button class="settings-btn">Configurações</button>
+      <a href="{{url_for('configuracoes')}}" class="settings-btn" title="Configurações">Configurações</a> 
       <a href="/logout" class="logout-icon" title="Logout">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d4966" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -27,8 +29,7 @@
 
   <main class="container">
     <h1>Adicionar uma manutenção feita</h1>
-    
-    <form method="POST" action="/funcionario/adicionar_manutencao">
+    <form method="post" action="/funcionario/adicionar_manutencao">
       <div class="form-group">
         <label for="servico">Serviço<span class="required">*</span></label>
         <input type="text" id="servico" name="servico" placeholder="Conserto placa; troca fio..." required>

@@ -15,11 +15,11 @@
   <body>
     <div class="header">
       <div class="header-left">
-        <span class="scpq-text">SCPQ</span>
+        <a href="{{url_for('funcionario.home')}}" class="scpq-text" title="Logout">SCPQ</a>
         <span class="greeting">Olá {{nome}}</span>
       </div>
       <div class="header-right">
-        <button class="settings-btn">Configurações</button>
+        <a href="{{url_for('configuracoes')}}" class="settings-btn" title="Configurações">Configurações</a>
         <a href="/logout" class="logout-icon" title="Logout">
           <svg
             width="28"

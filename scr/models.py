@@ -45,10 +45,11 @@ class Curso(db.Model):
 
 class Usuario(db.Model):
     __tablename__ = 'Usuario'
-    cpf = db.Column(db.BigInteger, primary_key=True)
+    cpf = db.Column(db.String(100), primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True)
     senha = db.Column(db.String(100), nullable=False)
+    foto_binaria = db.Column(db.LargeBinary)
     funcionario = db.relationship(
         'Funcionario', backref='usuario', uselist=False, cascade='all, delete'
     )
@@ -65,15 +66,15 @@ class Usuario(db.Model):
 
 class Funcionario(db.Model):
     __tablename__ = 'Funcionario'
-    matricula = db.Column(db.Integer, primary_key=True)
-    cpf = db.Column(db.BigInteger, db.ForeignKey('Usuario.cpf', ondelete='CASCADE'))
+    matricula = db.Column(db.String(100), primary_key=True)
+    cpf = db.Column(db.String(100), db.ForeignKey('Usuario.cpf', ondelete='CASCADE'))
 
 
 class Docente(db.Model):
     __tablename__ = 'Docente'
-    matricula = db.Column(db.Integer, primary_key=True)
+    matricula = db.Column(db.String(100), primary_key=True)
     cpf = db.Column(
-        db.BigInteger,
+        db.String(100),
         db.ForeignKey('Usuario.cpf', ondelete='CASCADE'),
         unique=True,
         nullable=False,
@@ -85,12 +86,12 @@ class Docente(db.Model):
 
 class Discente(db.Model):
     __tablename__ = 'Discente'
-    matricula = db.Column(db.Integer, primary_key=True)
+    matricula = db.Column(db.String(100), primary_key=True)
     data_de_inicio = db.Column(db.Date, nullable=False)
     data_de_termino = db.Column(db.Date)
     id_curso = db.Column(db.Integer, db.ForeignKey('Curso.id', ondelete='CASCADE'))
     cpf = db.Column(
-        db.BigInteger, db.ForeignKey('Usuario.cpf', ondelete='CASCADE'), nullable=False
+        db.String(100), db.ForeignKey('Usuario.cpf', ondelete='CASCADE'), nullable=False
     )
 
 
@@ -128,7 +129,6 @@ class Equipamento(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data_aquisicao = db.Column(db.Date)
     fabricante = db.Column(db.String(100))
-    foto_binaria = db.Column(db.LargeBinary)
     id_tipo = db.Column(
         db.Integer, db.ForeignKey('TipoEquipamento.id', ondelete='CASCADE')
     )

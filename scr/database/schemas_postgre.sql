@@ -37,7 +37,7 @@ CREATE TABLE
         nome VARCHAR(100) NOT NULL, -- Nome do usuário
         email VARCHAR(100) UNIQUE, -- E-mail do usuário (único)
         senha VARCHAR(100) NOT NULL, -- Senha de acesso
-        foto_binaria BLOB -- Imagem do equipamento
+        foto_binaria BYTEA -- Imagem do equipamento
     );
 
 -- Tabela de funcionários vinculados a usuários
