@@ -188,13 +188,24 @@ def minhas_ocorrencias():
     )
 
 
-@app.route('/ocorrencia/excluir/<int:id_ocorrencia>', methods=['POST'])
+@app.route('/minhas_ocorrencias/excluir/<int:id_ocorrencia>', methods=['POST'])
 def excluir_ocorrencia(id_ocorrencia):
     if OcorrenciaProcedures.excluir_por_id(id_ocorrencia):
         flash('Ocorrência excluída com sucesso.', 'success')
     else:
         flash('Erro ao excluir ocorrência.', 'danger')
     return redirect(url_for('home'))  # ou a página de ocorrências
+
+@app.route('/minhas_ocorrencias/editar/<int:id_ocorrencia>', methods=['POST'])
+
+def editar_ocorrencia(id_ocorrencia):
+    print(id_ocorrencia,request.form['descricao'])
+    if OcorrenciaProcedures.editar_por_id(id_ocorrencia, request.form['descricao']):
+        flash('Ocorrência editada', 'success')
+    else:
+        flash('Erro ao editar ocorrência.', 'danger')
+    return redirect(url_for('home'))  # ou a página de ocorrências
+
 
 
 if __name__ == '__main__':

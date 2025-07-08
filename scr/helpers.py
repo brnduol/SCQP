@@ -169,6 +169,23 @@ class OcorrenciaProcedures:
             db.session.rollback()  # desfaz qualquer mudança se houver erro
             print(f"Erro ao excluir ocorrência: {e}")
             return False
+    @staticmethod    
+    def editar_por_id(id_ocorrencia, nova_descricao):
+        from app import db
+
+        try:
+            ocorrencia = db.session.query(Ocorrencia).get(int(id_ocorrencia))
+            if ocorrencia:
+                ocorrencia.problema = nova_descricao  # Atualize os campos desejados aqui
+                db.session.commit()
+                return True
+            else:
+                return False  # Ocorrência não encontrada
+        except Exception as e:
+            db.session.rollback()
+            print(f"Erro ao editar ocorrência: {e}")
+            return False
+
 
 
 class EquipamentoProcedures:
