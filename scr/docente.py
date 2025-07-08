@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, sessio
 
 from models import *
 from helpers import *
+from procedures import *
 
 docente = Blueprint(
     'docente', __name__, static_folder='static', template_folder='template'

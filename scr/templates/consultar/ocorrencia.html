@@ -58,7 +58,7 @@
 
     <main class="container">
         <h1>Ocorrências</h1>
-        {% if (usuario == 'funcionario')   %}
+        {% if tipo_usuario == "funcionario"   %}
             <!-- Formulário de Busca Principal (por Problema) -->
             <form method="post" action="{{ url_for('funcionario.buscar') }}" class="search-form">
                 <div class="search-container">

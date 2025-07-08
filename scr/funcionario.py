@@ -4,6 +4,7 @@ from datetime import datetime
 
 from models import *
 from helpers import *
+from procedures import *
 
 funcionario = Blueprint(
     'funcionario', __name__, static_folder='static', template_folder='template'
@@ -186,5 +187,5 @@ def buscar():
             ocorrencias = OcorrenciaProcedures.listar_todas()
 
     return render_template(
-        'consultar/ocorrencia.html', ocorrencias=ocorrencias, nome=session.get('nome')
+        'consultar/ocorrencia.html', ocorrencias=ocorrencias, nome=session.get('nome'), tipo_usuario = 'funcionario',
     )
