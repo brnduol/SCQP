@@ -1,0 +1,1 @@
+--call excluir_ocorrência_por_id(x)

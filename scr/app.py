@@ -198,8 +198,6 @@ def excluir_ocorrencia(id_ocorrencia):
 
 
 if __name__ == '__main__':
-
-    
     db.create_all()
     app.run(debug=True)
    
