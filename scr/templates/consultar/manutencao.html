@@ -64,41 +64,42 @@
     
         <!-- Lista de Manutenções -->
         <div class="occurrences-list">
-            {% if manutencoes %}
-                {% for m in manutencoes %}
-                <div class="occurrence-card">
-                    <div class="occurrence-header">
-                        <div class="occurrence-id">#{{ m.id }}</div>
-                        <div class="occurrence-status status-normal">
-                            {{ m.data.strftime('%d/%m/%Y') if m.data else 'Sem data' }}
-                        </div>
+            {% for m in manutencoes %}
+            <div class="occurrence-card">
+                <div class="occurrence-header">
+                    <div class="occurrence-id">#{{ m.id }}</div>
+                    <div class="occurrence-status status-normal">
+                        {{ m.data.strftime('%d/%m/%Y') if m.data else 'Sem data' }}
                     </div>
-    
-                    <div class="occurrence-info">
-                        <div class="occurrence-description">
-                            <strong>Serviço:</strong> {{ m.servico or 'Não informado' }}
+                </div>
+            
+                <div class="occurrence-info">
+                    <div class="occurrence-description">
+                        <strong>Serviço:</strong> {{ m.servico or 'Não informado' }}
+                    </div>
+            
+                    <div class="occurrence-details">
+                        <div class="detail-item">
+                            <strong>Funcionário:</strong> {{ m.nome_funcionario or 'N/A' }}
                         </div>
-    
-                        <div class="occurrence-details">
-                            <div class="detail-item">
-                                <strong>Funcionário:</strong> {{ m.nome_funcionario or 'N/A' }}
-                            </div>
-                            <div class="detail-item">
-                                <strong>Equipamento ID:</strong> {{ m.id_equipamento }}
-                            </div>
-                            <div class="detail-item">
-                                <strong>Ocorrência ID:</strong> {{ m.id_ocorrencia or '---' }}
-                            </div>
+                        <div class="detail-item">
+                            <strong>Solicitante:</strong> {{ m.nome_solicitante or '---' }}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Equipamento ID:</strong> {{ m.id_equipamento or '---' }}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Equipamento:</strong> {{ m.nome or 'Não identificado' }}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Ocorrência ID:</strong> {{ m.id_ocorrencia or '---' }}
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+            </div>
             {% else %}
-                <div class="no-occurrences">
-                    <p>Nenhuma manutenção encontrada.</p>
-                    <a href="{{ url_for('funcionario.index') }}" class="reload-btn">Recarregar lista</a>
-                </div>
-            {% endif %}
+            <p>Nenhuma manutenção encontrada.</p>
+            {% endfor %}
         </div>
     
         <!-- Contador de Resultados -->

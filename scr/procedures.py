@@ -1,6 +1,6 @@
 from models import *
 from datetime import date
-
+from sqlalchemy.orm import aliased
 
 class OcorrenciaProcedures:
 
@@ -259,7 +259,28 @@ class ManutencaoProcedures:
 
     @staticmethod
     def listar_todas():
-        return Manutencao.query.order_by(Manutencao.data.desc()).all()
+        UsuarioFuncionario = aliased(Usuario)
+        UsuarioSolicitante = aliased(Usuario)
+
+        return (
+            db.session.query(
+                Manutencao.id,
+                Manutencao.servico,
+                Manutencao.data,
+                Manutencao.id_ocorrencia,
+                Manutencao.id_equipamento,
+                Equipamento.fabricante.label('nome'),
+                UsuarioFuncionario.nome.label('nome_funcionario'),
+                UsuarioSolicitante.nome.label('nome_solicitante')
+            )
+            .join(Equipamento, Manutencao.id_equipamento == Equipamento.id)
+            .join(Funcionario, Manutencao.id_funcionario == Funcionario.matricula)
+            .join(UsuarioFuncionario, UsuarioFuncionario.cpf == Funcionario.cpf)
+            .join(Ocorrencia, Ocorrencia.id == Manutencao.id_ocorrencia)
+            .join(UsuarioSolicitante, UsuarioSolicitante.cpf == Ocorrencia.id_usuario)
+            .order_by(Manutencao.data.desc())
+            .all()
+        )
 
     @staticmethod
     def listar_por_equipamento(id_equipamento):
