@@ -2,6 +2,7 @@ from models import *
 from datetime import date
 from sqlalchemy.orm import aliased
 
+
 class OcorrenciaProcedures:
 
     @staticmethod
@@ -271,7 +272,7 @@ class ManutencaoProcedures:
                 Manutencao.id_equipamento,
                 Equipamento.fabricante.label('nome'),
                 UsuarioFuncionario.nome.label('nome_funcionario'),
-                UsuarioSolicitante.nome.label('nome_solicitante')
+                UsuarioSolicitante.nome.label('nome_solicitante'),
             )
             .join(Equipamento, Manutencao.id_equipamento == Equipamento.id)
             .join(Funcionario, Manutencao.id_funcionario == Funcionario.matricula)

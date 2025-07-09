@@ -45,7 +45,6 @@ def verify_credentials_login(email, senha, type_usr):
 
 
 def get_ocorrencias(termo_busca=None):
-
     id_usuario = session['id']
     print(id_usuario)
     query = Ocorrencia.query.filter_by(id_usuario=id_usuario)

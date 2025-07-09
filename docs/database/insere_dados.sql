@@ -232,26 +232,13 @@ INSERT INTO Usuario (cpf, nome, email, senha) VALUES
 -- 5. Funcionários
 INSERT INTO Funcionario (matricula, cpf) VALUES 
 (1001, 11111111111),
-(1002, 22222222222),
 (1003, 33333333333),
-(1004, 44444444444),
 (1005, 55555555555);
 
 -- 6. Docentes
 INSERT INTO Docente (matricula, cpf, id_departamento) VALUES 
-(1001, 11111111111, 1),
 (1002, 22222222222, 2),
-(1003, 33333333333, 3),
-(1004, 44444444444, 4),
-(1005, 55555555555, 5);
-
--- 7. Discentes
-INSERT INTO Discente (matricula, data_de_inicio, data_de_termino, id_curso, cpf) VALUES 
-(2001, '2022-01-15', NULL, 1, 11111111111),
-(2002, '2022-01-15', NULL, 2, 22222222222),
-(2003, '2022-01-15', NULL, 3, 33333333333),
-(2004, '2022-01-15', NULL, 4, 44444444444),
-(2005, '2022-01-15', NULL, 5, 55555555555);
+(1004, 44444444444, 4);
 
 -- 8. Salas
 INSERT INTO Sala (id, nome, id_predio) VALUES 
@@ -296,7 +283,7 @@ INSERT INTO Ocorrencia (problema, data_abertura, data_fechamento, id_usuario) VA
 -- 13. Manutenções
 INSERT INTO Manutencao (servico, data, id_equipamento, id_ocorrencia, id_funcionario) VALUES 
 ('Substituição da fonte do monitor', '2024-01-15', 1, 1, 1001),
-('Limpeza da lente do projetor', '2024-03-01', 2, 2, 1002),
+('Limpeza da lente do projetor', '2024-03-01', 2, 2, 1005),
 ('Troca de roletes da impressora', '2024-03-10', 3, 3, 1003),
-('Atualização de driver do scanner', '2024-04-05', 4, 4, 1004),
+('Atualização de driver do scanner', '2024-04-05', 4, 4, 1001),
 ('Reset de fábrica do roteador', '2024-05-25', 5, 5, 1005);

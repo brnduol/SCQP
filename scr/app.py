@@ -1,3 +1,6 @@
+import os
+from io import BytesIO
+from dotenv import load_dotenv
 from datetime import datetime
 from flask import (
     Flask,
@@ -9,17 +12,19 @@ from flask import (
     flash,
     send_file,
 )
-from io import BytesIO
-
 from models import *
 from helpers import *
 from procedures import *
 from docente import docente
 from funcionario import funcionario
 
+
 app = Flask(__name__)
-app.secret_key = '42'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+app.secret_key = os.getenv('APP_SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE')
+
+database = os.getenv('DATABASE')
+secret_key = os.getenv('APP_SECRET_KEY')
 
 db.init_app(app)
 app.app_context().push()
