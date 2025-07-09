@@ -126,7 +126,11 @@ def adicionar_manutencao():
         else:
             return "Usuário não encontrado", 400
 
-    return render_template('adicionar/manutencao.html', nome=session['nome'])
+    return render_template(
+        'adicionar/manutencao.html',
+        nome=session['nome'],
+        tipo_usuario=session['user_type'],
+    )
 
 
 @funcionario.route('/lista_todas', methods=['GET'])
@@ -187,5 +191,8 @@ def buscar():
             ocorrencias = OcorrenciaProcedures.listar_todas()
 
     return render_template(
-        'consultar/ocorrencia.html', ocorrencias=ocorrencias, nome=session.get('nome'), tipo_usuario = 'funcionario',
+        'consultar/ocorrencia.html',
+        ocorrencias=ocorrencias,
+        nome=session.get('nome'),
+        tipo_usuario='funcionario',
     )

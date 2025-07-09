@@ -158,7 +158,11 @@ def adiciona_ocorrencia():
         else:
             return "Usuário não encontrado", 400
 
-    return render_template('adicionar/ocorrencia.html', nome=session['nome'])
+    return render_template(
+        'adicionar/ocorrencia.html',
+        nome=session['nome'],
+        tipo_usuario=session['user_type'],
+    )
 
 
 @app.route('/minhas_ocorrencias', methods=['GET', 'POST'])

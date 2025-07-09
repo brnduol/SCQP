@@ -1,54 +1,28 @@
-<!DOCTYPE html>
-<html lang="pt">
-    
-<head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="foo" />
-    <meta name="keywords" content="foo,bar" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Página adicionar ocorrência</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/adiciona_ocorrencia.css') }}">
-</head>
-  <body>
-    <div class="header">
-      <div class="header-left">
-        <a href="{{url_for('home')}}" class="scpq-text" title="Logout">SCPQ</a>
-        <span class="greeting">Olá {{nome}}</span>
-      </div>
-      <div class="header-right">
-        <a href="{{url_for('configuracoes')}}" class="settings-btn" title="Configurações">Configurações</a>
-        <a href="/logout" class="logout-icon" title="Logout">
-          <svg
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#2d4966"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" y1="12" x2="9" y2="12" />
-          </svg>
-        </a>
-      </div>
+{% extends "base.html" %}
+{% block title %}Manutenção{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/adiciona_ocorrencia.css') }}">
+{% endblock %} 
+{% block home_link %}
+{% if tipo_usuario=="funcionario" %}
+<a href="{{url_for('funcionario.home')}}" class="scpq-text" title="Logout">SCPQ</a>
+{% else %}
+<a href="{{url_for('home')}}" class="scpq-text" title="Logout">SCPQ</a>
+{% endif %}
+{% endblock %}
+{% block content %}
+<main class="container">
+  <h1>Descreva o problema com o máximo de detalhes</h1>
+  
+  <form method="post" action="/adiciona_ocorrencia">
+    <textarea name="problema" placeholder="Descreva o problema" required></textarea>
+
+    <label for="data_abertura">Data da ocorrência</label>
+    <input type="date" id="data_abertura" name="data_abertura" required>
+
+    <div class="button-container">
+      <button type="submit">Enviar</button>
     </div>
-
-  <main class="container">
-    <h1>Descreva o problema com o máximo de detalhes</h1>
-    
-    <form method="post" action="/adiciona_ocorrencia">
-      <textarea name="problema" placeholder="Descreva o problema" required></textarea>
-
-      <label for="data_abertura">Data da ocorrência</label>
-      <input type="date" id="data_abertura" name="data_abertura" required>
-
-      <div class="button-container">
-        <button type="submit">Enviar</button>
-      </div>
-    </form>
-  </main>
-</body>
-</html>
+  </form>
+</main>
+{% endblock %}
