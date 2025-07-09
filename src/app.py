@@ -19,7 +19,7 @@ from docente import docente
 from funcionario import funcionario
 
 
-load_dotenv('src/.envat')
+load_dotenv('src/.env')
 
 app = Flask(__name__)
 app.secret_key = os.getenv('APP_SECRET_KEY')
