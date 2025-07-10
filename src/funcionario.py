@@ -103,6 +103,7 @@ def adicionar_manutencao():
         id_ocorrencia = request.form.get('id_ocorrencia')
         data = datetime.strptime(data_str, '%Y-%m-%d').date()
         usuario = Usuario.query.filter_by(nome=session['nome']).first()
+        funcionario = Funcionario.query.filter_by(cpf=usuario.cpf).first()
 
         if usuario:
             nova_manutencao = Manutencao(
@@ -110,7 +111,7 @@ def adicionar_manutencao():
                 id_equipamento=id_equipamento,
                 data=data,
                 id_ocorrencia=id_ocorrencia if id_ocorrencia else None,
-                id_funcionario=usuario.cpf,
+                id_funcionario=funcionario.matricula,
             )
 
             db.session.add(nova_manutencao)
