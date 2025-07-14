@@ -93,9 +93,9 @@ src/
 
 ## Equipe
 
-* Bruno Eduardo dos Santos — @brnduol
-* Matheus de Melo Fellet — @figredos
-* Gustavo Alencar Valadares — @ValadaresGustavo
+- @brnduol
+- @figredos
+- @ValadaresGustavo
 
 ## 📄 Relatório Completo
 
