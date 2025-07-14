@@ -93,9 +93,11 @@ src/
 
 ## Equipe
 
-- @brnduol
-- @figredos
-- @ValadaresGustavo
+## 👨‍💻 Equipe
+
+- Bruno Eduardo dos Santos ([@brnduol](https://github.com/brnduol))
+- Matheus de Melo Fellet ([@figredos](https://github.com/figredos))
+- Gustavo Alencar Valadares ([@ValadaresGustavo](https://github.com/ValadaresGustavo))
 
 ## 📄 Relatório Completo
 
