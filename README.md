@@ -1,6 +1,6 @@
 # SCQP - Sistema de Controle de Qualidade de Patrimônio
 
-Projeto desenvolvido como trabalho final da disciplina **Banco de Dados** na **Universidade de Brasília (UnB)**. O SCQP é uma ferramenta estratégica que visa otimizar a gestão patrimonial de uma organização, com foco em rastreabilidade, manutenção e integridade de infraestrutura física e seus respectivos equipamentos.
+Projeto desenvolvido como trabalho final da disciplina **Banco de Dados** na **Universidade de Brasília (UnB)** do semestre 2025.1. O SCQP é uma ferramenta estratégica que visa otimizar a gestão patrimonial de uma organização, com foco em rastreabilidade, manutenção e integridade de infraestrutura física e seus respectivos equipamentos.
 
 ## Objetivo
 
