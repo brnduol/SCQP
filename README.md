@@ -42,10 +42,10 @@ O banco de dados foi modelado em três grandes grupos:
 
 ## Capturas de Tela
 
-![[docs\capturas\cadastro_docente.png]]
-![[docs\capturas\manutencao.png]]
-![[docs\capturas\configuracao.png]]
-![[docs\capturas\bd_pgadmin.png]]
+![Cadastro de Docente](docs/capturas/cadastro_docente.png)
+![Manutenção](docs/capturas/manutencao.png)
+![Configuração](docs/capturas/configuracao.png)
+![Banco de Dados - pgAdmin](docs/capturas/bd_pgadmin.png)
 
 
 ## Estrutura do Código
